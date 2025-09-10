@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Game API – Submit Score</title>
+</head>
+<body>
+<h2>Submit Player Score</h2>
+<input type="text" id="username" placeholder="Username" />
+<input type="number" id="score" placeholder="Score" />
+<button onclick="submitScore()">Submit</button>
+<p id="response"></p>
+<script>
+async function submitScore() {
+const username = document.getElementById('username').value;
+const score = parseInt(document.getElementById('score').value);
+const responseText = document.getElementById('response');
+try {
+const res = await fetch('/player/score', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ username, score })
+});
+const data = await res.json();
+if (res.ok) {
+responseText.innerText = data.message;
+} else {
+responseText.innerText = data.error || 'Unknown error';
+}
+} catch (err) {
+responseText.innerText = 'Request failed: ' + err.message;
+}
+}
+</script>
+</body>
+</html>
